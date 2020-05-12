@@ -1,14 +1,12 @@
 .crazy-input {
-  overflow: hidden;
   position: relative;
   display: inline-block;
-  width: 160px;
-  height: 30px;
+  width: 100%;
 
   .crazy-input__inner {
     outline: none;
     width: 100%;
-    height: 100%;
+    height: 44px;
     margin: 0;
     appearance: none;
     border-radius: 5px;
@@ -17,14 +15,6 @@
     box-sizing: border-box;
     font-family: Microsoft YaHei, arial, sans-serif;
     transition: border-color 200ms cubic-bezier(.645, .045, .355, 1);
-
-    &:hover {
-      border-color: #C0C4CC
-    }
-
-    &:focus {
-      border-color: #409EFF
-    }
   }
 
   .crazy-input-number-button__wrap {
@@ -105,20 +95,40 @@
   vertical-align: bottom;
 
   .crazy-textarea__inner {
+    width: 100%;
     outline: none;
     display: block;
-    resize: vertical;
-    padding: 5px 15px;
-    line-height: 1.5;
-    box-sizing: border-box;
-    width: 100%;
-    font-size: inherit;
     color: #606266;
+    resize: vertical;
+    padding: 5px 15px 12px;
+    line-height: 1.5;
+    border-radius: 5px;
+    box-sizing: border-box;
     background-color: #FFF;
     background-image: none;
     border: 1px solid #DCDFE6;
-    border-radius: 5px;
+    font-family: Microsoft YaHei, arial, sans-serif;
     transition: border-color 200ms cubic-bezier(.645, .045, .355, 1);
+  }
+}
+
+.crazy-input,
+.crazy-textarea {
+  .crazy-textarea__count,
+  .crazy-input__count {
+    position: absolute;
+    font-size: 12px;
+    line-height: 12px;
+    background: #fff;
+    overflow: hidden;
+    color: #909399;
+    right: 1px;
+    bottom: 1px;
+    border-bottom-right-radius: 5px;
+  }
+
+  .crazy-textarea__inner,
+  .crazy-input__inner {
 
     &:hover {
       border-color: #C0C4CC
@@ -127,14 +137,5 @@
     &:focus {
       border-color: #409EFF
     }
-  }
-
-  .crazy-textarea__count {
-    color: #909399;
-    background: #fff;
-    position: absolute;
-    font-size: 12px;
-    bottom: 5px;
-    right: 10px;
   }
 }

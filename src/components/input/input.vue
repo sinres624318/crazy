@@ -3,18 +3,23 @@
        @mousedown="inputClick($event)">
     <template v-if="type!=='textarea'">
       <input
-        :type="type==='number'?'text':type"
+        class="crazy-input__inner"
         ref="input"
+        :type="type==='number'?'text':type"
         autocomplete="off"
         :disabled="disabled"
         :readonly="readonly"
-        @blur="isFocus=false"
-        @focus="isFocus=true"
         v-bind="$attrs"
-        class="crazy-input__inner"
-        @input="inputValueDispose($event.target)"/>
+        @input="inputValueDispose($event.target)"
+        @blur="blur"
+        @focus="focus"
+        @compositionstart="compositionStart"
+        @compositionend="compositionEnd($event.target)"/>
+      <span v-if="wordLimitVisible" class="crazy-input__count">
+        {{ currentInputLength }}/{{ $attrs.maxlength }}
+      </span>
       <div
-        v-if="type==='number'"
+        v-if="type==='number' && showStepButton"
         @mousedown="inputButtonMousedown($event)"
         @mouseup="inputButtonMouseup"
         class="crazy-input-number-button__wrap">
@@ -26,15 +31,17 @@
     </template>
     <template v-else>
       <textarea
-        ref="textarea"
         class="crazy-textarea__inner"
+        ref="textarea"
         :tabindex="tabindex"
         :disabled="disabled"
         :readonly="readonly"
         v-bind="$attrs"
-        @input="input">
+        @input="input($event.target)"
+        @blur="blur"
+        @focus="focus">
       </textarea>
-      <span class="crazy-textarea__count">{{ currentInputLength }}/{{ $attrs.maxlength }}</span>
+      <span v-if="wordLimitVisible" class="crazy-textarea__count">{{ currentInputLength }}/{{ $attrs.maxlength }}</span>
     </template>
   </div>
 </template>
@@ -44,11 +51,12 @@
     name: "CInput",
     data() {
       return {
-        oldValue:'',
+        oldValue: '',
         isFocus: false,
         currentMousedownButton: "",
         intervalTimer: null,
-        timeoutTimer: null
+        timeoutTimer: null,
+        isComposition: false
       };
     },
     props: {
@@ -58,6 +66,11 @@
       disabled: Boolean,
       thousandMark: Boolean,
       valueThousandMark: Boolean,
+      showWordLimit: Boolean,
+      showStepButton: {
+        type: Boolean,
+        default: true
+      },
       type: {
         type: String,
         default: "text"
@@ -73,6 +86,9 @@
       },
       nativeInputValue() {
         return this.value === null || this.value === undefined ? '' : String(this.value);
+      },
+      wordLimitVisible() {
+        return this.showWordLimit && this.$attrs.maxlength && (this.type === 'text' || this.type === 'textarea');
       }
     },
     watch: {
@@ -81,28 +97,45 @@
       }
     },
     methods: {
+      compositionStart() {
+        if (this.type !== 'number') return;
+        this.isComposition = true;
+      },
+      compositionEnd(input) {
+        if (this.type !== 'number') return;
+        this.isComposition = false;
+        let value = input.value.replace(/,/g, '').replace(/([^.\-\d]|^\..*).*/g, "");
+        input.value = this.thousandMark ? this.addThousandMark(value) : value;
+      },
       focus() {
         this.getInput().focus();
+        this.type === 'number' && this.setFocusStatus(true);
+      },
+      setFocusStatus(status) {
+        this.isFocus = status;
+        !status && this.showStepButton && this.inputButtonMouseup();
       },
       blur() {
         this.getInput().blur();
+        this.type === 'number' && this.setFocusStatus(false);
       },
       setNativeInputValue() {
         const input = this.getInput();
         if (!input) return;
-        if (this.getInputValue() === this.nativeInputValue) return;
-        input.value = this.nativeInputValue;
+        if (this.getInputValue(input.value) === this.nativeInputValue) return;
+        input.value = this.type === 'number' && this.thousandMark ? this.addThousandMark(this.nativeInputValue) : this.nativeInputValue;
+        this.oldValue = input.value;
       },
-      input() {
-        let value = this.getInputValue();
+      input(input) {
+        let value = this.getInputValue(input.value);
         this.$emit('input', value);
         this.$nextTick(this.setNativeInputValue);
       },
       getInput() {
         return this.$refs.input || this.$refs.textarea;
       },
-      getInputValue() {
-        return this.type === 'number' && this.thousandMark && !this.valueThousandMark ? this.removeThousandMark(this.getInput().value) : this.getInput().value;
+      getInputValue(value) {
+        return this.type === 'number' && this.thousandMark && !this.valueThousandMark ? this.removeThousandMark(value) : value;
       },
       inputButtonMouseup() {
         this.currentMousedownButton = "";
@@ -154,39 +187,39 @@
         this.startTimer(this.currentMousedownButton);
       },
       inputValueDispose(input) {
-        if (this.type !== "number") return;
-        if (!input.value) return;
-        console.log('disposeBefore',input.value)
-        input.value = input.value.replace(/([^.\-\d]|^\..*)/g, "");
-        console.log('disposeAfter',input.value)
-        //3、负号后不能出现非数字
-        /*let minusBehindNoNumber = /^-[^\d].*!/g;
-        if (minusBehindNoNumber.test(input.value)) {
-          input.value = "-";
+        if (this.isComposition) return;
+        if (this.type === "number" && input.value) {
+          input.value = input.value.replace(/([^.\-\d]|^\..*)/g, "");
+          //3、负号后不能出现非数字
+          let minusBehindNoNumber = /^-[^\d].*!/g;
+          if (minusBehindNoNumber.test(input.value)) {
+            input.value = "-";
+          }
+          //4、不能出现第二个点
+          let findDotNumber = input.value.match(/\./g) || [];
+          let findDot = new RegExp("\\.", "g");
+          if (findDotNumber.length > 1) {
+            findDot.exec(input.value);
+            findDot.exec(input.value);
+            input.value = input.value.slice(0, findDot.lastIndex - 1);
+          }
+          //5、以0或-0开头后边必须是点
+          if (/(^0[^.]|^-0[^.])/g.test(input.value)) {
+            input.value = input.value[0] === "-" ? "-0" : "0";
+          }
+          // 6、以0.或-0.开头后边不能出现非数字
+          if (/(^0\.[^\d]|^-0\.[^\d])/g.test(input.value)) {
+            input.value = input.value[0] === "-" ? "-0." : "0.";
+          }
+          // 7、数字和小数点后边不能出现其他符号
+          if (/(\d[^\d^.].*|\.[^\d^.].*)/g.test(input.value)) {
+            let index = /(\d[^\d^.].*|\.[^\d^.].*)/g.exec(input.value).index;
+            input.value = input.value.slice(0, index + 1);
+          }
+          if (this.thousandMark) input.value = this.addThousandMark(input.value);
+          if (input.value === this.oldValue) return;
         }
-        //4、不能出现第二个点
-        let findDotNumber = input.value.match(/\./g) || [];
-        let findDot = new RegExp("\\.", "g");
-        if (findDotNumber.length > 1) {
-          findDot.exec(input.value);
-          findDot.exec(input.value);
-          input.value = input.value.slice(0, findDot.lastIndex - 1);
-        }
-        //5、以0或-0开头后边必须是点
-        if (/(^0[^.]|^-0[^.])/g.test(input.value)) {
-          input.value = input.value[0] === "-" ? "-0" : "0";
-        }
-        // 6、以0.或-0.开头后边不能出现非数字
-        if (/(^0\.[^\d]|^-0\.[^\d])/g.test(input.value)) {
-          input.value = input.value[0] === "-" ? "-0." : "0.";
-        }
-        // 7、数字和小数点后边不能出现其他符号
-        if (/(\d[^\d^.].*|\.[^\d^.].*)/g.test(input.value)) {
-          let index = /(\d[^\d^.].*|\.[^\d^.].*)/g.exec(input.value).index;
-          input.value = input.value.slice(0, index + 1);
-        }
-        if (this.type === 'number' && this.thousandMark) input.value = this.addThousandMark(input.value);
-        this.input();*/
+        this.input(input);
         /**
          * 正则表达式内含有大量后行断言，IE、Edge、Safari等不支持
          * new RegExp可以打包成功，但是很多浏览器会报错
@@ -205,7 +238,6 @@
     },
     mounted() {
       this.setNativeInputValue();
-      if (this.type === 'number') window.onblur = this.inputButtonMouseup;
     }
   };
 </script>
