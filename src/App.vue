@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div contenteditable="true"></div>
     <c-input type="text" show-word-limit maxlength="110" :show-step-button="true" @input="input" v-model="value" :thousand-mark="true" :value-thousand-mark="false"></c-input>
     <c-input type="textarea" show-word-limit maxlength="12220" :show-step-button="true" @input="textarea" v-model="value2"></c-input>
   </div>
@@ -24,7 +25,7 @@
         console.log(this.value)
       },
       textarea() {
-        console.log(this.value2)
+        // console.log(this.value2)
       }
     }
   }

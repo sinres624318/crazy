@@ -9,7 +9,7 @@
     height: 44px;
     margin: 0;
     appearance: none;
-    border-radius: 5px;
+    border-radius: 2px;
     padding: 0 20px 0 15px;
     border: 1px solid #ddd;
     box-sizing: border-box;
@@ -102,7 +102,7 @@
     resize: vertical;
     padding: 5px 15px 12px;
     line-height: 1.5;
-    border-radius: 5px;
+    border-radius: 2px;
     box-sizing: border-box;
     background-color: #FFF;
     background-image: none;
@@ -124,9 +124,13 @@
     color: #909399;
     right: 1px;
     bottom: 1px;
-    border-bottom-right-radius: 5px;
+    border-radius:  0 0 0 2px;
+    pointer-events: none;
   }
-
+  .crazy-textarea__count{
+    width: calc(100% - 2px);
+    text-align: right;
+  }
   .crazy-textarea__inner,
   .crazy-input__inner {
 

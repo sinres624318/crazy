@@ -127,9 +127,15 @@
         this.oldValue = input.value;
       },
       input(input) {
+        this.type === 'textarea' && this.wordLimitVisible && this.setTextareaScrollTop(input);
         let value = this.getInputValue(input.value);
         this.$emit('input', value);
         this.$nextTick(this.setNativeInputValue);
+      },
+      setTextareaScrollTop(input) {
+        if (input.value.length === input.selectionEnd) {
+          input.scrollTop = input.scrollHeight;
+        }
       },
       getInput() {
         return this.$refs.input || this.$refs.textarea;
