@@ -1,31 +1,34 @@
 <template>
-  <div :class="[type==='textarea'?'crazy-textarea':'crazy-input',{'crazy-input__focus':type==='number'&&isFocus}]"
-       @mousedown="inputClick($event)">
+  <div
+    :class="[type==='textarea'?'crazy-textarea':'crazy-input',{'crazy-input__focus':type==='number'&&isFocus},{'is-disabled':disabled}]"
+    @mousedown="inputClick($event)">
     <template v-if="type!=='textarea'">
       <input
         class="crazy-input__inner"
         ref="input"
         :type="type==='number'?'text':type"
-        autocomplete="off"
         :disabled="disabled"
         :readonly="readonly"
         v-bind="$attrs"
         @input="inputValueDispose($event.target)"
-        @blur="blur"
-        @focus="focus"
+        @focus="handleFocus($event)"
+        @blur="handleBlur($event)"
+        @change="handleChange($event)"
         @compositionstart="compositionStart"
         @compositionend="compositionEnd($event.target)"/>
-      <span v-if="wordLimitVisible" class="crazy-input__count">
+      <span v-if="wordLimitVisible && !disabled" class="crazy-input__count">
         {{ currentInputLength }}/{{ $attrs.maxlength }}
       </span>
       <div
-        v-if="type==='number' && showStepButton"
+        v-if="type==='number' && showStepButton && !disabled"
         @mousedown="inputButtonMousedown($event)"
         @mouseup="inputButtonMouseup"
         class="crazy-input-number-button__wrap">
         <span
+          @mouseleave="inputButtonMouseup"
           :class="['crazy-input-number__button','crazy-input-number-button__top',{'crazy-input-number__button__mousedown':currentMousedownButton==='top'}]"></span>
         <span
+          @mouseleave="inputButtonMouseup"
           :class="['crazy-input-number__button','crazy-input-number-button__bottom',{'crazy-input-number__button__mousedown':currentMousedownButton==='bottom'}]"></span>
       </div>
     </template>
@@ -37,11 +40,12 @@
         :disabled="disabled"
         :readonly="readonly"
         v-bind="$attrs"
-        @input="input($event.target)"
-        @blur="blur"
-        @focus="focus">
+        @input="handleInput($event.target)"
+        @focus="handleFocus($event)"
+        @blur="handleBlur($event)"
+        @change="handleChange($event)">
       </textarea>
-      <span v-if="wordLimitVisible" class="crazy-textarea__count">{{ currentInputLength }}/{{ $attrs.maxlength }}</span>
+      <span v-if="wordLimitVisible && !disabled" class="crazy-textarea__count">{{ currentInputLength }}/{{ $attrs.maxlength }}</span>
     </template>
   </div>
 </template>
@@ -107,26 +111,39 @@
         let value = input.value.replace(/,/g, '').replace(/([^.\-\d]|^\..*).*/g, "");
         input.value = this.thousandMark ? this.addThousandMark(value) : value;
       },
-      focus() {
-        this.getInput().focus();
-        this.type === 'number' && this.setFocusStatus(true);
-      },
       setFocusStatus(status) {
         this.isFocus = status;
         !status && this.showStepButton && this.inputButtonMouseup();
       },
+      focus() {
+        this.getInput().focus();
+      },
       blur() {
         this.getInput().blur();
+      },
+      handleFocus(event) {
+        this.$emit('focus', event);
+        this.type === 'number' && this.setFocusStatus(true);
+      },
+      handleBlur(event) {
+        this.$emit('blur', event);
         this.type === 'number' && this.setFocusStatus(false);
+      },
+      handleChange(event) {
+        this.$emit('change', this.getInputValue(event.target.value));
       },
       setNativeInputValue() {
         const input = this.getInput();
         if (!input) return;
+        let value = this.type === 'number' && this.thousandMark ? this.addThousandMark(this.nativeInputValue) : this.nativeInputValue;
+        this.type === 'number' && this.setOldValue(value);
         if (this.getInputValue(input.value) === this.nativeInputValue) return;
-        input.value = this.type === 'number' && this.thousandMark ? this.addThousandMark(this.nativeInputValue) : this.nativeInputValue;
-        this.oldValue = input.value;
+        input.value = value;
       },
-      input(input) {
+      setOldValue(value) {
+        this.oldValue = value;
+      },
+      handleInput(input) {
         this.type === 'textarea' && this.wordLimitVisible && this.setTextareaScrollTop(input);
         let value = this.getInputValue(input.value);
         this.$emit('input', value);
@@ -225,7 +242,7 @@
           if (this.thousandMark) input.value = this.addThousandMark(input.value);
           if (input.value === this.oldValue) return;
         }
-        this.input(input);
+        this.handleInput(input);
         /**
          * 正则表达式内含有大量后行断言，IE、Edge、Safari等不支持
          * new RegExp可以打包成功，但是很多浏览器会报错

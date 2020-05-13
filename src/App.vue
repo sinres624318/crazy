@@ -1,8 +1,12 @@
 <template>
   <div>
-    <div contenteditable="true"></div>
-    <c-input type="text" show-word-limit maxlength="110" :show-step-button="true" @input="input" v-model="value" :thousand-mark="true" :value-thousand-mark="false"></c-input>
-    <c-input type="textarea" show-word-limit maxlength="12220" :show-step-button="true" @input="textarea" v-model="value2"></c-input>
+    <el-input placeholder="请输入" show-word-limit maxlength="110" type="text" clearable v-model="elTextarea"></el-input>
+    <c-input type="number" show-word-limit maxlength="110" :show-step-button="true"
+             placeholder="请输入"
+             @input="input" v-model="value"></c-input>
+    <c-input type="textarea" show-word-limit maxlength="12220" :show-step-button="true"
+             placeholder="请输入"
+             @input="textarea" v-model="value2"></c-input>
   </div>
 </template>
 
@@ -16,8 +20,9 @@
     },
     data() {
       return {
-        value: '1233',
-        value2: 'asdasda'
+        value: '',
+        value2: '',
+        elTextarea: ''
       }
     },
     methods: {
@@ -25,8 +30,8 @@
         console.log(this.value)
       },
       textarea() {
-        // console.log(this.value2)
-      }
+        console.log(this.value2)
+      },
     }
   }
 </script>

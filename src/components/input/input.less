@@ -122,24 +122,49 @@
     background: #fff;
     overflow: hidden;
     color: #909399;
-    right: 1px;
+    left: 5px;
     bottom: 1px;
-    border-radius:  0 0 0 2px;
+    border-radius: 0 0 0 2px;
     pointer-events: none;
   }
-  .crazy-textarea__count{
-    width: calc(100% - 2px);
-    text-align: right;
-  }
+
   .crazy-textarea__inner,
   .crazy-input__inner {
 
+    &::-webkit-input-placeholder {
+      color: #C0C4CC
+    }
+
+    &::-ms-input-placeholder {
+      color: #C0C4CC
+    }
+
+    &::-ms-input-placeholder {
+      color: #C0C4CC
+    }
+
+    &::placeholder {
+      color: #C0C4CC
+    }
     &:hover {
-      border-color: #C0C4CC
+      border-color: #C0C4CC;
     }
 
     &:focus {
-      border-color: #409EFF
+      border-color: #409EFF;
+    }
+  }
+}
+
+.is-disabled {
+  &.crazy-input,
+  &.crazy-textarea {
+    .crazy-input__inner,
+    .crazy-textarea__inner {
+      background-color: #F5F7FA;
+      border-color: #E4E7ED;
+      cursor: not-allowed;
+      color: #C0C4CC;
     }
   }
 }
