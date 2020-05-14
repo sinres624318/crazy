@@ -1,6 +1,5 @@
 <template>
   <div>
-    <el-input placeholder="请输入" show-word-limit maxlength="110" type="text" clearable v-model="elTextarea"></el-input>
     <c-input type="number" show-word-limit maxlength="110" :show-step-button="true"
              placeholder="请输入"
              @input="input" v-model="value"></c-input>

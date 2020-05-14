@@ -53,6 +53,7 @@
 <script>
   export default {
     name: "CInput",
+    inheritAttrs: false,
     data() {
       return {
         oldValue: '',
@@ -98,6 +99,9 @@
     watch: {
       nativeInputValue() {
         this.setNativeInputValue();
+      },
+      thousandMark() {
+        this.setNativeInputValue(true);
       }
     },
     methods: {
@@ -132,12 +136,12 @@
       handleChange(event) {
         this.$emit('change', this.getInputValue(event.target.value));
       },
-      setNativeInputValue() {
+      setNativeInputValue(setThousandMark) {
         const input = this.getInput();
         if (!input) return;
         let value = this.type === 'number' && this.thousandMark ? this.addThousandMark(this.nativeInputValue) : this.nativeInputValue;
         this.type === 'number' && this.setOldValue(value);
-        if (this.getInputValue(input.value) === this.nativeInputValue) return;
+        if (this.getInputValue(input.value) === this.nativeInputValue && !setThousandMark) return;
         input.value = value;
       },
       setOldValue(value) {
