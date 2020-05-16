@@ -1,21 +1,16 @@
 <template>
   <div>
-    <c-input type="number" show-word-limit maxlength="110" :show-step-button="true"
-             placeholder="请输入"
-             @input="input" v-model="value"></c-input>
-    <c-input type="textarea" show-word-limit maxlength="12220" :show-step-button="true"
-             placeholder="请输入"
-             @input="textarea" v-model="value2"></c-input>
+    <c-tabs :tabs-data="[0,1,2,3,4,5,6,7,8,0,9,1,4,123,5,12,12]"></c-tabs>
   </div>
 </template>
 
 <script>
-  import CInput from './components/input';
+  import CTabs from './components/tabs';
 
   export default {
     name: 'App',
     components: {
-      CInput
+      CTabs
     },
     data() {
       return {
