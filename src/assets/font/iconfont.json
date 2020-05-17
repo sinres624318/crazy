@@ -1,0 +1,23 @@
+{
+  "id": "1824058",
+  "name": "crazy",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "201666",
+      "name": "3.1 返回1",
+      "font_class": "crazy-left",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "201667",
+      "name": "3.1 返回2",
+      "font_class": "crazy-right",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    }
+  ]
+}
