@@ -13,13 +13,13 @@
       }
     },
     methods: {
-      change(item){
-        this.$emit('change', item);
+      change(value) {
+        this.$emit('change', value);
       },
       disposeNavData() {
         if (!this.$slots.default) return;
         this.navData = this.$slots.default.filter(vnode => {
-          return vnode.tag && vnode.componentOptions && vnode.componentOptions.Ctor.options.name === 'CTabItem' && (vnode.componentOptions.children || vnode.componentOptions.propsData.label)
+          return vnode.tag && vnode.componentOptions && vnode.componentOptions.Ctor.options.name === 'CTabItem'
         });
       }
     },
@@ -27,9 +27,9 @@
       this.disposeNavData()
     },
     render(h) {
-      let {navData,change} = this;
+      let {navData, change} = this;
       return (
-        <div class="crazy-tabs" >
+        <div class="crazy-tabs">
           <tab-nav navData={navData} onChange={change}></tab-nav>
         </div>
       )

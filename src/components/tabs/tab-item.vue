@@ -8,12 +8,6 @@
   export default {
     name: "CTabItem",
     inheritAttrs: false,
-    props: {
-      label: String
-    },
-    updated() {
-      // this.$parent.$emit('tab-nav-update');
-    }
   }
 </script>
 

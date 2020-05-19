@@ -139,10 +139,10 @@
             'active': activeData === index
           }}
                onClick={() => {
-                 tabClick(index,item.data.attrs.value)
+                 tabClick(index, item.data.attrs.value)
                }}>
             <div class="crazy-tabs-nav-item__inner">
-              {item.componentOptions.children || item.componentOptions.propsData.label}
+              {item.componentOptions.children || item.data.attrs.label}
             </div>
           </div>
         )

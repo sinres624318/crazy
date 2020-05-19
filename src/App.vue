@@ -7,7 +7,7 @@
         <div>123555</div>
         <div>123555</div>
       </c-tab-item>
-      <c-tab-item :value="item" :label="item.text" v-for="item in tabsData"></c-tab-item>
+      <c-tab-item :value="item" :label="item.text" v-for="(item,index) in tabsData" :key="index"></c-tab-item>
       <c-tab-item label="item"></c-tab-item>
       <c-tab-item label="item">34444444</c-tab-item>
       <c-tab-item label="item">5555555</c-tab-item>
