@@ -120,6 +120,9 @@
       this.$nextTick(this.setScrollable);
       addResizeListener(this.$el, this.setScrollable);
     },
+    updated() {
+      this.$nextTick(this.setScrollable);
+    },
     render(h) {
       const {
         scrollable,
@@ -130,17 +133,16 @@
         tabClick
       } = this;
       let navInner = this.navData.map((item, index) => {
-        console.log(item.value)
         return (
           <div class={{
             'crazy-tabs-nav-item': true,
             'active': activeData === index
           }}
                onClick={() => {
-                 tabClick(index)
+                 tabClick(index,item.data.attrs.value)
                }}>
             <div class="crazy-tabs-nav-item__inner">
-              {item}
+              {item.componentOptions.children || item.componentOptions.propsData.label}
             </div>
           </div>
         )

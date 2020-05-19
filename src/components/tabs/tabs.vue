@@ -1,9 +1,3 @@
-<template>
-  <div class="crazy-tabs">
-    <tab-nav :nav-data="navData"></tab-nav>
-  </div>
-</template>
-
 <script>
   import tabNav from './tab-nav'
 
@@ -19,13 +13,26 @@
       }
     },
     methods: {
+      change(item){
+        this.$emit('change', item);
+      },
       disposeNavData() {
         if (!this.$slots.default) return;
-        this.navData = this.$slots.default.filter(vnode => vnode.tag && vnode.componentOptions && vnode.componentOptions.Ctor.options.name === 'CTabItem');
+        this.navData = this.$slots.default.filter(vnode => {
+          return vnode.tag && vnode.componentOptions && vnode.componentOptions.Ctor.options.name === 'CTabItem' && (vnode.componentOptions.children || vnode.componentOptions.propsData.label)
+        });
       }
     },
-    created() {
-      this.disposeNavData();
+    mounted() {
+      this.disposeNavData()
+    },
+    render(h) {
+      let {navData,change} = this;
+      return (
+        <div class="crazy-tabs" >
+          <tab-nav navData={navData} onChange={change}></tab-nav>
+        </div>
+      )
     }
   }
 </script>

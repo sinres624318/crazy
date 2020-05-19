@@ -1,9 +1,14 @@
 <template>
   <div>
     <c-tabs @change="change">
-      <c-tab-item label="item" asd="123" value="111111111111111">111111111111111</c-tab-item>
-      <c-tab-item label="item">2222222222</c-tab-item>
-      <c-tab-item label="item">333333333</c-tab-item>
+      <c-tab-item value="123" c="123">
+        <div>123</div>
+        <div>123</div>
+        <div>123555</div>
+        <div>123555</div>
+      </c-tab-item>
+      <c-tab-item :value="item" :label="item.text" v-for="item in tabsData"></c-tab-item>
+      <c-tab-item label="item"></c-tab-item>
       <c-tab-item label="item">34444444</c-tab-item>
       <c-tab-item label="item">5555555</c-tab-item>
       <c-tab-item label="item">66666666</c-tab-item>
@@ -13,15 +18,30 @@
 </template>
 
 <script>
-  import CTabs from './components/tabs';
-
   export default {
     name: 'App',
-    components: {
-      CTabs
-    },
+    components: {},
     data() {
-      return {}
+      return {
+        tabsData:[
+          {
+            id:1,
+            text:'123'
+          },
+          {
+            id:2,
+            text:'234'
+          },
+          {
+            id:3,
+            text:'345'
+          },
+          {
+            id:4,
+            text:'456'
+          },
+        ]
+      }
     },
     methods: {
       change(val) {
