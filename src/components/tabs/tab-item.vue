@@ -1,16 +1,9 @@
-<template>
-  <div>
-    <slot></slot>
-  </div>
-</template>
-
 <script>
   export default {
     name: "CTabItem",
     inheritAttrs: false,
+    render(h) {
+      return (<slot></slot>)
+    }
   }
 </script>
-
-<style scoped>
-
-</style>

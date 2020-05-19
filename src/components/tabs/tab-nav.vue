@@ -23,7 +23,6 @@
 
   export default {
     name: "tab-nav",
-    inheritAttrs: false,
     data() {
       return {
         activeData: 0,
