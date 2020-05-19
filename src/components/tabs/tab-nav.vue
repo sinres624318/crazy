@@ -1,22 +1,3 @@
-<!--<template>
-  <div :class="['crazy-tabs-nav__wrap',{'is-scrollable':!scrollable}]">
-    <div ref="navContainer" class="crazy-tabs-nav__container">
-      <div ref="navInner" class="crazy-tabs-nav__inner">
-        <div :class="['crazy-tabs-nav-item',{'active':activeData === index}]" v-for="(item, index) in navData"
-             @click.stop="tabClick(index, item)">
-          <div class="crazy-tabs-nav-item__inner">13131313</div>
-        </div>
-      </div>
-    </div>
-    <div v-if="scrollable"
-         @click="scrollPrev"
-         :class="['icon-crazy-left','crazy-tabs-nav__button', 'crazy-tabs-nav-button__prev', {'crazy-tabs-nav-button-disabled':disabledButton==='prev'}]"></div>
-    <div v-if="scrollable"
-         @click="scrollNext"
-         :class="['icon-crazy-right','crazy-tabs-nav__button','crazy-tabs-nav-button__next',{'crazy-tabs-nav-button-disabled':disabledButton==='next'}]"></div>
-  </div>
-</template>-->
-
 <script>
   import {addResizeListener} from '../utils/resize-event';
   import getStyle from "../utils/getStyle";
