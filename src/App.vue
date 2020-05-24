@@ -23,7 +23,7 @@
     components: {},
     data() {
       return {
-        rateValue: 0.3,
+        rateValue: 0,
       }
     },
     watch: {
