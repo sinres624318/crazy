@@ -1,9 +1,11 @@
 import CInput from './input';
 import CTabs from './tabs';
+import CRate from './rate';
 
 const components = [
   CInput,
-  CTabs
+  CTabs,
+  CRate
 ]
 
 const install = function (Vue) {

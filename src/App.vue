@@ -1,5 +1,6 @@
 <template>
   <div>
+    <c-rate v-model="rateValue" :show-score="true"></c-rate>
     <c-tabs @change="change">
       <c-tab-item value="123" c="123">
         <div>123</div>
@@ -7,7 +8,6 @@
         <div>123555</div>
         <div>123555</div>
       </c-tab-item>
-      <c-tab-item :value="item" :label="item.text" v-for="(item,index) in tabsData" :key="index"></c-tab-item>
       <c-tab-item label="item"></c-tab-item>
       <c-tab-item label="item">34444444</c-tab-item>
       <c-tab-item label="item">5555555</c-tab-item>
@@ -23,24 +23,12 @@
     components: {},
     data() {
       return {
-        tabsData:[
-          {
-            id:1,
-            text:'123'
-          },
-          {
-            id:2,
-            text:'234'
-          },
-          {
-            id:3,
-            text:'345'
-          },
-          {
-            id:4,
-            text:'456'
-          },
-        ]
+        rateValue: 0.3,
+      }
+    },
+    watch: {
+      rateValue() {
+        console.log(this.rateValue)
       }
     },
     methods: {
@@ -51,5 +39,5 @@
   }
 </script>
 
-<style>
+<style scoped>
 </style>

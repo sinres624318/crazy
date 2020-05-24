@@ -134,7 +134,7 @@
           </div>
           {scrollable ? <div
             class={{
-              'icon-crazy-left': true,
+              'icon-arrowleft': true,
               'crazy-tabs-nav__button': true,
               'crazy-tabs-nav-button__prev': true,
               'crazy-tabs-nav-button-disabled': disabledButton === 'prev'
@@ -146,7 +146,7 @@
           </div> : null}
           {scrollable ? <div
             class={{
-              'icon-crazy-right': true,
+              'icon-arrowright': true,
               'crazy-tabs-nav__button': true,
               'crazy-tabs-nav-button__next': true,
               'crazy-tabs-nav-button-disabled': disabledButton === 'next'

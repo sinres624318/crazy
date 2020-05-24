@@ -6,18 +6,88 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "201666",
-      "name": "3.1 返回1",
-      "font_class": "crazy-left",
-      "unicode": "e600",
-      "unicode_decimal": 58880
+      "icon_id": "248960",
+      "name": "fav_fill",
+      "font_class": "favfill",
+      "unicode": "e685",
+      "unicode_decimal": 59013
     },
     {
-      "icon_id": "201667",
-      "name": "3.1 返回2",
-      "font_class": "crazy-right",
-      "unicode": "e601",
-      "unicode_decimal": 58881
+      "icon_id": "248961",
+      "name": "fav",
+      "font_class": "fav",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "1222014",
+      "name": "arrow-down",
+      "font_class": "c-arrow-down",
+      "unicode": "e692",
+      "unicode_decimal": 59026
+    },
+    {
+      "icon_id": "1222026",
+      "name": "arrow-left",
+      "font_class": "arrowleft",
+      "unicode": "e693",
+      "unicode_decimal": 59027
+    },
+    {
+      "icon_id": "1222030",
+      "name": "arrow-right",
+      "font_class": "arrowright",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
+      "icon_id": "1222032",
+      "name": "arrow-up",
+      "font_class": "arrowup",
+      "unicode": "e695",
+      "unicode_decimal": 59029
+    },
+    {
+      "icon_id": "1223697",
+      "name": "close",
+      "font_class": "close",
+      "unicode": "e69a",
+      "unicode_decimal": 59034
+    },
+    {
+      "icon_id": "1224871",
+      "name": "search",
+      "font_class": "search",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    },
+    {
+      "icon_id": "4765725",
+      "name": "close-circle",
+      "font_class": "close-circle",
+      "unicode": "e77d",
+      "unicode_decimal": 59261
+    },
+    {
+      "icon_id": "4765726",
+      "name": "frown",
+      "font_class": "frown",
+      "unicode": "e77e",
+      "unicode_decimal": 59262
+    },
+    {
+      "icon_id": "4765733",
+      "name": "meh",
+      "font_class": "meh",
+      "unicode": "e780",
+      "unicode_decimal": 59264
+    },
+    {
+      "icon_id": "4765739",
+      "name": "smile",
+      "font_class": "smile",
+      "unicode": "e783",
+      "unicode_decimal": 59267
     }
   ]
 }
