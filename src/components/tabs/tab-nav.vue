@@ -1,5 +1,5 @@
 <script>
-  import {addResizeListener} from '../utils/resize-event';
+  import {addResizeListener, removeResizeListener} from '../utils/resize-event';
   import getStyle from "../utils/getStyle";
 
   export default {
@@ -102,6 +102,9 @@
     },
     updated() {
       this.$nextTick(this.setScrollable);
+    },
+    beforeDestroy() {
+      removeResizeListener(this.$el, this.setScrollable);
     },
     render(h) {
       const {
